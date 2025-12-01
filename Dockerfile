@@ -24,5 +24,11 @@ COPY --from=build /app/inti-wasi/target/*.jar app.jar
 # Puerto que usa Spring Boot
 EXPOSE 8080
 
-# Comando de arranque
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Copiamos wait-for-it.sh al contenedor
+COPY wait-for-it.sh /app/inti-wasi/wait-for-it.sh
+RUN chmod +x /app/inti-wasi/wait-for-it.sh
+
+# Espera a que MySQL esté listo antes de arrancar
+ENTRYPOINT ["/app/inti-wasi/wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
+
