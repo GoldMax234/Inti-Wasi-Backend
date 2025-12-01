@@ -22,6 +22,7 @@ WORKDIR /app
 COPY --from=build /app/inti-wasi/target/*.jar app.jar
 
 # Puerto que usa Spring Boot
+ENV PORT=8080
 EXPOSE 8080
 
 # Comando de arranque
